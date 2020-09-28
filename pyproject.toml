@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "json2dataclass"
+version = "0.1.0"
+description = "A python package for converting JSON files into Python dataclasses"
+authors = ["Ethan Mann <emannguitar@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+attrs = "^20.2.0"
+typer = "^0.3.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-mock = "*"
+mypy = "*"
+taskipy = "*"
+safety = "*"
+pytest-cov = "*"
+flake8 = "*"
+black = "*"
+
+[tool.taskipy.tasks]
+check = """
+isort .\
+ && black .\
+ && flake8 json2dataclass\
+ && safety check --bare\
+ && mypy json2dataclass\
+ && pytest --cov json2dataclass tests\
+"""
+
+[tool.black]
+line-length = 120
+target_version = ['py36']
+exclude = '''
+(
+  /(
+    | \.git
+    | \.venv
+    | \.mypy_cache
+    | json2dataclass/templates
+    | tests/test_templates
+  )/
+)
+'''
+
+[tool.isort]
+line_length = 120
+profile = "black"
+skip = [".venv", "tests/test_templates"]
+
+[tool.coverage.run]
+omit = ["json2dataclass/templates/*"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
